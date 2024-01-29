@@ -12,10 +12,20 @@ const initialArr = [
 ];
 
 const allnono = document.querySelector(".nonogram");
+const topNum = document.querySelector(".top-numbers");
+const leftNum = document.querySelector(".left-numbers");
+const leftFirstNum = document.querySelector(".first-num");
+const leftSecondNum = document.querySelector(".second-num");
+console.log(leftFirstNum);
 
 let userArr = initialArr;
 let row;
 let column;
+
+let rowLeftHints;
+let numLeftHints;
+let firstNumLeft = 0;
+let secondNumLeft = 0;
 
 allnono.addEventListener("click", (e) => {
   if (e.target === e.currentTarget) {
@@ -51,3 +61,54 @@ function checkArr(array1, array2) {
 }
 
 checkArr(arr1, initialArr);
+
+function changeDirection() {
+  topNum.childNodes.forEach((item, index) => {
+    item.classList.add("direction-numbers");
+  });
+}
+
+changeDirection();
+
+function createArr(arr) {
+  const hints = [];
+  firstNumLeft = 0;
+  for (let i = 0; i <= arr.length - 1; i++) {
+    if (arr[i] === 1) {
+      firstNumLeft++;
+    } else {
+      hints.push(firstNumLeft);
+      firstNumLeft = 0;
+    }
+  }
+  hints.push(firstNumLeft);
+  return hints;
+}
+
+function analyzeLeftNumber(arr) {
+  arr.forEach((item, index) => {
+    if (item.includes(1)) {
+      rowLeftHints = index;
+
+      const hint = createArr(item);
+      const n = hint.filter((item) => item !== 0);
+
+      if (n.length === 1) {
+        leftNum.childNodes[rowLeftHints].textContent = [...n];
+      }
+
+      if (n.length === 2) {
+        leftNum.childNodes[rowLeftHints].childNodes[0].textContent = n[0];
+        leftNum.childNodes[rowLeftHints].childNodes[1].textContent = n[1];
+      }
+
+      if (n.length === 3) {
+        leftNum.childNodes[rowLeftHints].childNodes[0].textContent = n[0];
+        leftNum.childNodes[rowLeftHints].childNodes[1].textContent = n[1];
+        leftNum.childNodes[rowLeftHints].childNodes[2].textContent = n[2];
+      }
+    }
+  });
+}
+
+analyzeLeftNumber(arr1);

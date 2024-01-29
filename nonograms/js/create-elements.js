@@ -4,6 +4,13 @@ let nono;
 function createNumbers() {
   num = document.createElement("div");
   num.classList.add("numbers");
+  const firstNum = document.createElement("span");
+  const secondNum = document.createElement("span");
+  const thirdNum = document.createElement("span");
+
+  num.append(thirdNum);
+  num.append(secondNum);
+  num.prepend(firstNum);
 }
 
 function createNonograms() {
@@ -26,7 +33,6 @@ const createElements = () => {
 
   for (let i = 1; i <= 5; i++) {
     createNumbers();
-    num.textContent = i;
     topNumbers.append(num);
   }
 
@@ -35,7 +41,6 @@ const createElements = () => {
 
   for (let i = 1; i <= 5; i++) {
     createNumbers();
-    num.textContent = i;
     leftNumbers.append(num);
   }
 
