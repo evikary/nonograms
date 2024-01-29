@@ -67,4 +67,9 @@ body {
 
 .nonograms {
   background-color: #fff;
+  cursor: pointer;
+}
+
+.black-background {
+  background-color: #000;
 }
