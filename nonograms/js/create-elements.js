@@ -24,6 +24,10 @@ const createElements = () => {
   const container = document.createElement("div");
   container.classList.add("container");
 
+  const resetButton = document.createElement("button");
+  resetButton.classList.add("reset");
+  resetButton.textContent = "reset game";
+
   for (let i = 1; i <= 5; i++) {
     createNumbers();
     topNumbers.append(num);
@@ -49,6 +53,7 @@ const createElements = () => {
   container.append(nonogram);
   wrapper.append(topNumbers);
   wrapper.append(container);
+  wrapper.append(resetButton);
   main.append(wrapper);
   document.body.prepend(main);
 };

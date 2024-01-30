@@ -12,12 +12,12 @@ const initialArr = [
 ];
 
 const wrapper = document.querySelector(".wrapper");
-console.log(wrapper);
 const allNonogramms = document.querySelector(".nonogram");
 const topNum = document.querySelector(".top-numbers");
 const leftNum = document.querySelector(".left-numbers");
+const resetBtn = document.querySelector(".reset");
 
-let userArr = initialArr;
+let userArr = JSON.parse(JSON.stringify(initialArr));
 let row;
 let column;
 
@@ -44,7 +44,9 @@ allNonogramms.addEventListener("click", (e) => {
   }
 });
 
-//создание текста для победителя
+/**
+ * создание текста для победителя
+ */
 function createText() {
   const congratulation = document.createElement("h1");
   congratulation.innerHTML = `Great! <br />
@@ -52,7 +54,9 @@ function createText() {
   wrapper.prepend(congratulation);
 }
 
-//проверка на отгаданную нонограмму
+/**
+ * проверка на отгаданную нонограмму
+ */
 function checkArrVerification(array1, array2) {
   const res = array1.every((item, index) =>
     array1[index].every((el, i) => el === array2[index][i])
@@ -61,7 +65,9 @@ function checkArrVerification(array1, array2) {
   return res;
 }
 
-//изменение напрвления чисел в подсказках
+/**
+ * изменение напрвления чисел в подсказках
+ */
 function changeDirection() {
   topNum.childNodes.forEach((item, index) => {
     item.classList.add("direction-numbers");
@@ -70,7 +76,9 @@ function changeDirection() {
 
 changeDirection();
 
-// создание подсказок слева
+/**
+ * создание подсказок слева
+ */
 function createArrForAnalyzeLeft(arr) {
   const hints = [];
   numLeftHints = 0;
@@ -100,7 +108,9 @@ function analyzeLeftNumber(arr) {
 
 analyzeLeftNumber(arr1);
 
-// создание подсказок сверху
+/**
+ * создание подсказок сверху
+ */
 function createArrForAnalyzeTop(columnNum) {
   const hints = [];
   numTopHints = 0;
@@ -132,3 +142,29 @@ function analyzeTopNumber() {
 }
 
 analyzeTopNumber();
+
+/**
+ * сброс игры
+ */
+function resetGame() {
+  allNonogramms.childNodes.forEach((item) => {
+    item.classList.remove("black-background");
+  });
+
+  userArr = JSON.parse(JSON.stringify(initialArr));
+}
+
+resetBtn.addEventListener("click", (e) => {
+  resetGame();
+  removeText();
+});
+
+/**
+ * удаление текста
+ */
+function removeText() {
+  const text = document.querySelector("h1");
+  if (text) {
+    text.remove();
+  }
+}
