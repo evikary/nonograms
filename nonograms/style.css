@@ -4,8 +4,22 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   background-color: azure;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  font-family: sans-serif;
+  font-size: 26px;
+  font-weight: 400;
 }
 
 .main {
@@ -17,16 +31,17 @@ body {
   width: 600px;
   height: 600px;
   margin: auto;
-  padding: 100px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .top-numbers {
   display: flex;
   column-gap: 10px;
   padding-right: 12px;
-  margin-left: auto;
+  margin-left: 102px;
 }
 
 .numbers {
@@ -43,6 +58,7 @@ body {
 }
 
 .container {
+  width: 364px;
   display: flex;
   margin-top: 20px;
   margin-left: 20px;
