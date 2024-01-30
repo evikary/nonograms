@@ -28,6 +28,8 @@ allNonogramms.addEventListener("click", (e) => {
   if (e.target === e.currentTarget || checkArrVerification(arr1, initialArr)) {
     return;
   }
+
+  e.target.classList.remove("cross");
   e.target.classList.toggle("black-background");
 
   allNonogramms.childNodes.forEach((item, index) => {
@@ -42,6 +44,19 @@ allNonogramms.addEventListener("click", (e) => {
   if (checkArrVerification(arr1, userArr)) {
     createText();
   }
+});
+
+/**
+ * поставить крестик
+ */
+allNonogramms.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  if (e.target === e.currentTarget) {
+    return;
+  }
+
+  e.target.classList.remove("black-background");
+  e.target.classList.toggle("cross");
 });
 
 /**

@@ -103,3 +103,9 @@ h1 {
   background: hsl(305, 37%, 81%);
   cursor: pointer;
 }
+
+.cross {
+  background-image: url("./assets/icons8-удалить-48.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
