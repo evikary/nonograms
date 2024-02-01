@@ -18,6 +18,10 @@ const leftNum = document.querySelector(".left-numbers");
 const resetBtn = document.querySelector(".reset");
 const timer = document.querySelector(".box-container");
 const resolve = document.querySelector(".resolve");
+const audioBlack = new Audio("./assets/audio1.mp3");
+const audioCross = new Audio("./assets/audio2.mp3");
+const audioClear = new Audio("./assets/audio3.mp3");
+const audioWin = new Audio("./assets/audio4.mp3");
 
 let userArr = JSON.parse(JSON.stringify(initialArr));
 let row;
@@ -38,7 +42,14 @@ allNonogramms.addEventListener("click", (e) => {
   }
 
   e.target.classList.remove("cross");
-  e.target.classList.toggle("black-background");
+
+  if (e.target.className === "nonograms black-background") {
+    audioClear.play();
+    e.target.classList.remove("black-background");
+  } else {
+    audioBlack.play();
+    e.target.classList.toggle("black-background");
+  }
 
   allNonogramms.childNodes.forEach((item, index) => {
     if (e.target === item) {
@@ -52,6 +63,7 @@ allNonogramms.addEventListener("click", (e) => {
   if (checkArrVerification(arr1, userArr)) {
     createText();
     clearInterval(timerId);
+    audioWin.play();
   }
 });
 
@@ -67,7 +79,14 @@ allNonogramms.addEventListener("contextmenu", (e) => {
   }
 
   e.target.classList.remove("black-background");
-  e.target.classList.toggle("cross");
+
+  if (e.target.className === "nonograms cross") {
+    audioClear.play();
+    e.target.classList.remove("cross");
+  } else {
+    audioCross.play();
+    e.target.classList.toggle("cross");
+  }
 });
 
 /**
