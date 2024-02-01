@@ -17,6 +17,7 @@ const topNum = document.querySelector(".top-numbers");
 const leftNum = document.querySelector(".left-numbers");
 const resetBtn = document.querySelector(".reset");
 const timer = document.querySelector(".box-container");
+const resolve = document.querySelector(".resolve");
 
 let userArr = JSON.parse(JSON.stringify(initialArr));
 let row;
@@ -59,6 +60,8 @@ allNonogramms.addEventListener("click", (e) => {
  */
 allNonogramms.addEventListener("contextmenu", (e) => {
   e.preventDefault();
+  startTimer();
+
   if (e.target === e.currentTarget) {
     return;
   }
@@ -224,3 +227,29 @@ function showTimer(min, sec) {
   timer.textContent = `
   ${String(min).padStart(2, "0")} : ${String(sec).padStart(2, "0")}`;
 }
+
+/**
+ * показать готовое решение
+ */
+function showResolve() {
+  let finishArr = JSON.parse(JSON.stringify(arr1)).flat();
+
+  finishArr.forEach((item, index) => {
+    if (timerId) {
+      clearInterval(timerId);
+    }
+
+    if (item === 1) {
+      allNonogramms.childNodes[index].classList.add("black-background");
+      allNonogramms.childNodes[index].classList.remove("cross");
+    } else {
+      allNonogramms.childNodes[index].classList.remove("black-background");
+      allNonogramms.childNodes[index].classList.remove("cross");
+    }
+    console.log("className", allNonogramms.childNodes[index].className);
+  });
+}
+
+resolve.addEventListener("click", (e) => {
+  showResolve();
+});

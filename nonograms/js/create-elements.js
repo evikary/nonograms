@@ -31,6 +31,10 @@ const createElements = () => {
   resetButton.classList.add("reset");
   resetButton.textContent = "reset game";
 
+  const resolveButton = document.createElement("button");
+  resolveButton.classList.add("resolve");
+  resolveButton.textContent = "show solution";
+
   for (let i = 1; i <= 5; i++) {
     createNumbers();
     topNumbers.append(num);
@@ -57,6 +61,7 @@ const createElements = () => {
   wrapper.append(topNumbers);
   wrapper.append(container);
   wrapper.append(boxContainer);
+  wrapper.append(resolveButton);
   wrapper.append(resetButton);
   main.append(wrapper);
   document.body.prepend(main);
