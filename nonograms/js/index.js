@@ -16,6 +16,7 @@ const allNonogramms = document.querySelector(".nonogram");
 const topNum = document.querySelector(".top-numbers");
 const leftNum = document.querySelector(".left-numbers");
 const resetBtn = document.querySelector(".reset");
+const timer = document.querySelector(".box-container");
 
 let userArr = JSON.parse(JSON.stringify(initialArr));
 let row;
@@ -24,7 +25,13 @@ let column;
 let numLeftHints = 0;
 let numTopHints = 0;
 
+let time = 0;
+let timerId;
+
+showTimer(0, 0);
+
 allNonogramms.addEventListener("click", (e) => {
+  startTimer();
   if (e.target === e.currentTarget || checkArrVerification(arr1, initialArr)) {
     return;
   }
@@ -43,6 +50,7 @@ allNonogramms.addEventListener("click", (e) => {
 
   if (checkArrVerification(arr1, userArr)) {
     createText();
+    clearInterval(timerId);
   }
 });
 
@@ -65,7 +73,7 @@ allNonogramms.addEventListener("contextmenu", (e) => {
 function createText() {
   const congratulation = document.createElement("h1");
   congratulation.innerHTML = `Great! <br />
-        You have solved the nonogram!`;
+        You have solved the nonogram in ${time} seconds!`;
   wrapper.prepend(congratulation);
 }
 
@@ -164,6 +172,7 @@ analyzeTopNumber();
 function resetGame() {
   allNonogramms.childNodes.forEach((item) => {
     item.classList.remove("black-background");
+    item.classList.remove("cross");
   });
 
   userArr = JSON.parse(JSON.stringify(initialArr));
@@ -172,6 +181,10 @@ function resetGame() {
 resetBtn.addEventListener("click", (e) => {
   resetGame();
   removeText();
+  clearInterval(timerId);
+  timerId = null;
+  time = 0;
+  showTimer(0, 0);
 });
 
 /**
@@ -182,4 +195,32 @@ function removeText() {
   if (text) {
     text.remove();
   }
+}
+
+/**
+ * запуск таймера
+ */
+function startTimer() {
+  if (timerId) {
+    return;
+  }
+
+  timerId = setInterval(() => {
+    time += 1;
+    let minutes = 0;
+    let seconds = 0;
+
+    minutes = Math.trunc(time / 60);
+    seconds = time % 60;
+
+    showTimer(minutes, seconds);
+  }, 1000);
+}
+
+/**
+ * отображение таймера
+ */
+function showTimer(min, sec) {
+  timer.textContent = `
+  ${String(min).padStart(2, "0")} : ${String(sec).padStart(2, "0")}`;
 }
