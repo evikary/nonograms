@@ -27,6 +27,10 @@ const createElements = () => {
   const boxContainer = document.createElement("div");
   boxContainer.classList.add("box-container");
 
+  const toggleTheme = document.createElement("button");
+  toggleTheme.classList.add("toggle-theme");
+  toggleTheme.textContent = "toggle🌙theme";
+
   const resetButton = document.createElement("button");
   resetButton.classList.add("reset");
   resetButton.textContent = "reset game";
@@ -67,6 +71,7 @@ const createElements = () => {
   wrapper.append(choiceEasygame);
   wrapper.append(resolveButton);
   wrapper.append(resetButton);
+  wrapper.append(toggleTheme);
   main.append(wrapper);
   document.body.prepend(main);
 };

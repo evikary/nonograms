@@ -17,10 +17,15 @@ const resetBtn = document.querySelector(".reset");
 const timer = document.querySelector(".box-container");
 const resolve = document.querySelector(".resolve");
 const select5 = document.querySelector(".select");
+const toggleTheme = document.querySelector(".toggle-theme");
+const useDark = window.matchMedia("(prefers-color-scheme: dark)");
 const audioBlack = new Audio("./assets/audio1.mp3");
 const audioCross = new Audio("./assets/audio2.mp3");
 const audioClear = new Audio("./assets/audio3.mp3");
 const audioWin = new Audio("./assets/audio4.mp3");
+
+console.log(toggleTheme);
+console.log(useDark);
 
 let userArr = JSON.parse(JSON.stringify(initialArr));
 let row;
@@ -318,3 +323,16 @@ function combineFunctions() {
   time = 0;
   showTimer(0, 0);
 }
+
+function toggleDarkMode(state) {
+  console.log(state);
+  document.documentElement.classList.toggle("dark-mode", state);
+}
+toggleDarkMode(useDark.matches);
+
+useDark.addListener((evt) => toggleDarkMode(evt.matches));
+
+toggleTheme.addEventListener("click", () => {
+  console.log("hhhh");
+  document.documentElement.classList.toggle("dark-mode");
+});
