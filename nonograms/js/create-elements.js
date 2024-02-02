@@ -35,6 +35,9 @@ const createElements = () => {
   resolveButton.classList.add("resolve");
   resolveButton.textContent = "show solution";
 
+  const choiceEasygame = document.createElement("select");
+  choiceEasygame.classList.add("select");
+
   for (let i = 1; i <= 5; i++) {
     createNumbers();
     topNumbers.append(num);
@@ -61,6 +64,7 @@ const createElements = () => {
   wrapper.append(topNumbers);
   wrapper.append(container);
   wrapper.append(boxContainer);
+  wrapper.append(choiceEasygame);
   wrapper.append(resolveButton);
   wrapper.append(resetButton);
   main.append(wrapper);

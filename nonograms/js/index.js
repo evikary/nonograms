@@ -1,7 +1,5 @@
 import "./create-elements.js";
-import { arr1 } from "./dataArrs.js";
-
-console.log("dataArrs", arr1);
+import { fiveCells } from "./dataArrs.js";
 
 const initialArr = [
   [0, 0, 0, 0, 0],
@@ -18,6 +16,7 @@ const leftNum = document.querySelector(".left-numbers");
 const resetBtn = document.querySelector(".reset");
 const timer = document.querySelector(".box-container");
 const resolve = document.querySelector(".resolve");
+const select5 = document.querySelector(".select");
 const audioBlack = new Audio("./assets/audio1.mp3");
 const audioCross = new Audio("./assets/audio2.mp3");
 const audioClear = new Audio("./assets/audio3.mp3");
@@ -33,11 +32,22 @@ let numTopHints = 0;
 let time = 0;
 let timerId;
 
+let indexGame = 0;
+
+let showRes;
+
 showTimer(0, 0);
 
+/**
+ * Поставить черную клетку
+ */
 allNonogramms.addEventListener("click", (e) => {
   startTimer();
-  if (e.target === e.currentTarget || checkArrVerification(arr1, initialArr)) {
+  if (
+    e.target === e.currentTarget ||
+    checkArrVerification(fiveCells[indexGame].arr, userArr) ||
+    showRes
+  ) {
     return;
   }
 
@@ -60,7 +70,7 @@ allNonogramms.addEventListener("click", (e) => {
 
   userArr[row][column] = userArr[row][column] === 0 ? 1 : 0;
 
-  if (checkArrVerification(arr1, userArr)) {
+  if (checkArrVerification(fiveCells[indexGame].arr, userArr)) {
     createText();
     clearInterval(timerId);
     audioWin.play();
@@ -74,7 +84,11 @@ allNonogramms.addEventListener("contextmenu", (e) => {
   e.preventDefault();
   startTimer();
 
-  if (e.target === e.currentTarget) {
+  if (
+    e.target === e.currentTarget ||
+    checkArrVerification(fiveCells[indexGame].arr, userArr) ||
+    showRes
+  ) {
     return;
   }
 
@@ -141,17 +155,15 @@ function createArrForAnalyzeLeft(arr) {
 
 function analyzeLeftNumber(arr) {
   arr.forEach((item, index) => {
-    if (item.includes(1)) {
-      const hint = createArrForAnalyzeLeft(item);
+    const hint = createArrForAnalyzeLeft(item);
 
-      leftNum.childNodes[index].innerHTML = hint
-        .map((el) => `<span>${el}</span>`)
-        .join("");
-    }
+    leftNum.childNodes[index].innerHTML = hint
+      .map((el) => `<span>${el}</span>`)
+      .join("");
   });
 }
 
-analyzeLeftNumber(arr1);
+analyzeLeftNumber(fiveCells[indexGame].arr);
 
 /**
  * создание подсказок сверху
@@ -161,7 +173,7 @@ function createArrForAnalyzeTop(columnNum) {
   numTopHints = 0;
 
   for (let i = 0; i <= 4; i++) {
-    if (arr1[i][columnNum] === 1) {
+    if (fiveCells[indexGame].arr[i][columnNum] === 1) {
       numTopHints++;
     } else {
       hints.push(numTopHints);
@@ -192,6 +204,7 @@ analyzeTopNumber();
  * сброс игры
  */
 function resetGame() {
+  showRes = null;
   allNonogramms.childNodes.forEach((item) => {
     item.classList.remove("black-background");
     item.classList.remove("cross");
@@ -201,12 +214,7 @@ function resetGame() {
 }
 
 resetBtn.addEventListener("click", (e) => {
-  resetGame();
-  removeText();
-  clearInterval(timerId);
-  timerId = null;
-  time = 0;
-  showTimer(0, 0);
+  combineFunctions();
 });
 
 /**
@@ -251,24 +259,62 @@ function showTimer(min, sec) {
  * показать готовое решение
  */
 function showResolve() {
-  let finishArr = JSON.parse(JSON.stringify(arr1)).flat();
+  let finishArr = JSON.parse(JSON.stringify(fiveCells[indexGame].arr)).flat();
 
   finishArr.forEach((item, index) => {
     if (timerId) {
       clearInterval(timerId);
     }
 
+    allNonogramms.childNodes[index].classList.remove("cross");
+
     if (item === 1) {
       allNonogramms.childNodes[index].classList.add("black-background");
-      allNonogramms.childNodes[index].classList.remove("cross");
     } else {
       allNonogramms.childNodes[index].classList.remove("black-background");
-      allNonogramms.childNodes[index].classList.remove("cross");
     }
-    console.log("className", allNonogramms.childNodes[index].className);
   });
 }
 
 resolve.addEventListener("click", (e) => {
+  showRes = true;
   showResolve();
 });
+
+/**
+ * создание выпадающего списка с играми
+ */
+function createListGame() {
+  fiveCells.forEach((item, index) => {
+    const nameGame = document.createElement("option");
+    nameGame.value = index;
+    nameGame.classList.add("option");
+    nameGame.textContent = item.name;
+    select5.append(nameGame);
+  });
+}
+
+createListGame();
+
+/**
+ * выбор игры в выпадающем списке
+ */
+select5.addEventListener("input", (e) => {
+  showRes = null;
+  indexGame = +e.target.value;
+  analyzeLeftNumber(fiveCells[indexGame].arr);
+  analyzeTopNumber();
+  combineFunctions();
+});
+
+/**
+ * объединение функций
+ */
+function combineFunctions() {
+  resetGame();
+  removeText();
+  clearInterval(timerId);
+  timerId = null;
+  time = 0;
+  showTimer(0, 0);
+}
