@@ -113,17 +113,25 @@ h1 {
   flex-direction: column;
 }
 
-.reset {
-  width: 110px;
-  margin: 10px 0 0 60px;
+.box-buttons {
+  margin: 30px 0 30px 60px;
+  display: flex;
+  column-gap: 10px;
+}
+
+.btn {
+  width: 96px;
   padding: 5px;
   font-family: sans-serif;
   font-size: 16px;
   border: none;
   border-radius: 12px;
+  cursor: pointer;
+}
+
+.reset {
   background: hsl(305, 37%, 81%);
   color: #3e3c3c;
-  cursor: pointer;
 }
 
 .reset:hover {
@@ -132,16 +140,8 @@ h1 {
 }
 
 .resolve {
-  width: 110px;
-  margin: 10px 0 0 60px;
-  padding: 5px;
-  font-family: sans-serif;
-  font-size: 16px;
-  border: none;
-  border-radius: 12px;
   background: hsl(255, 36%, 81%);
   color: #fff;
-  cursor: pointer;
 }
 
 .resolve:hover {
@@ -175,6 +175,7 @@ h1 {
   border-radius: 10px;
   background: hsl(184, 38%, 76%);
   color: #3e3c3c;
+  cursor: pointer;
 }
 
 .select:hover {
@@ -192,4 +193,27 @@ h1 {
   border-radius: 10px;
   background: hsl(0, 1%, 32%);
   color: #fff;
+  cursor: pointer;
+}
+
+.toggle-theme:hover {
+  background: hsl(0, 5%, 15%);
+}
+
+.continue {
+  background: hsl(127, 20%, 64%);
+  color: #fff;
+}
+
+.continue:hover {
+  background: hsl(115, 44%, 70%);
+}
+
+.save {
+  background: hsl(191, 58%, 78%);
+  color: #3e3c3c;
+}
+
+.save:hover {
+  background: hsl(190, 61%, 63%);
 }

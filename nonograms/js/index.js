@@ -17,15 +17,14 @@ const resetBtn = document.querySelector(".reset");
 const timer = document.querySelector(".box-container");
 const resolve = document.querySelector(".resolve");
 const select5 = document.querySelector(".select");
+const saveGame = document.querySelector(".save");
+const continueGame = document.querySelector(".continue");
 const toggleTheme = document.querySelector(".toggle-theme");
 const useDark = window.matchMedia("(prefers-color-scheme: dark)");
 const audioBlack = new Audio("./assets/audio1.mp3");
 const audioCross = new Audio("./assets/audio2.mp3");
 const audioClear = new Audio("./assets/audio3.mp3");
 const audioWin = new Audio("./assets/audio4.mp3");
-
-console.log(toggleTheme);
-console.log(useDark);
 
 let userArr = JSON.parse(JSON.stringify(initialArr));
 let row;
@@ -40,6 +39,10 @@ let timerId;
 let indexGame = 0;
 
 let showRes;
+
+let lastGame;
+
+let indexLastGame;
 
 showTimer(0, 0);
 
@@ -158,8 +161,8 @@ function createArrForAnalyzeLeft(arr) {
   return hints.filter((item) => item !== 0);
 }
 
-function analyzeLeftNumber(arr) {
-  arr.forEach((item, index) => {
+function analyzeLeftNumber() {
+  fiveCells[indexGame].arr.forEach((item, index) => {
     const hint = createArrForAnalyzeLeft(item);
 
     leftNum.childNodes[index].innerHTML = hint
@@ -168,7 +171,7 @@ function analyzeLeftNumber(arr) {
   });
 }
 
-analyzeLeftNumber(fiveCells[indexGame].arr);
+analyzeLeftNumber();
 
 /**
  * создание подсказок сверху
@@ -264,7 +267,9 @@ function showTimer(min, sec) {
  * показать готовое решение
  */
 function showResolve() {
-  let finishArr = JSON.parse(JSON.stringify(fiveCells[indexGame].arr)).flat();
+  let finishArr;
+
+  finishArr = JSON.parse(JSON.stringify(fiveCells[indexGame].arr)).flat();
 
   finishArr.forEach((item, index) => {
     if (timerId) {
@@ -307,7 +312,7 @@ createListGame();
 select5.addEventListener("input", (e) => {
   showRes = null;
   indexGame = +e.target.value;
-  analyzeLeftNumber(fiveCells[indexGame].arr);
+  analyzeLeftNumber();
   analyzeTopNumber();
   combineFunctions();
 });
@@ -324,8 +329,10 @@ function combineFunctions() {
   showTimer(0, 0);
 }
 
+/**
+ * переключение темы
+ */
 function toggleDarkMode(state) {
-  console.log(state);
   document.documentElement.classList.toggle("dark-mode", state);
 }
 toggleDarkMode(useDark.matches);
@@ -333,6 +340,66 @@ toggleDarkMode(useDark.matches);
 useDark.addListener((evt) => toggleDarkMode(evt.matches));
 
 toggleTheme.addEventListener("click", () => {
-  console.log("hhhh");
   document.documentElement.classList.toggle("dark-mode");
+});
+
+/**
+ * сохранение последней игры
+ */
+saveGame.addEventListener("click", (e) => {
+  lastGame = JSON.parse(JSON.stringify(userArr));
+  localStorage.setItem("last", JSON.stringify(lastGame));
+  localStorage.setItem("lastTime", JSON.stringify(time));
+  localStorage.setItem("indexGame", JSON.stringify(indexGame));
+  indexLastGame = select5.childNodes[indexGame].value;
+});
+
+/**
+ * возобновить работу таймера с того же места
+ */
+function startLastTimer() {
+  clearInterval(timerId);
+  timerId = null;
+  time = JSON.parse(localStorage.getItem("lastTime"));
+  startTimer();
+}
+
+/**
+ * вернуть последнюю игру
+ */
+function continueLastGame() {
+  const saveLastGame = JSON.parse(localStorage.getItem("last"));
+
+  if (saveLastGame === undefined) {
+    return;
+  }
+
+  saveLastGame.flat().forEach((item, index) => {
+    allNonogramms.childNodes[index].classList.remove("cross");
+
+    if (item === 1) {
+      allNonogramms.childNodes[index].classList.add("black-background");
+    } else {
+      allNonogramms.childNodes[index].classList.remove("black-background");
+    }
+  });
+
+  return saveLastGame;
+}
+
+continueGame.addEventListener("click", (e) => {
+  const game = continueLastGame();
+
+  if (!game) {
+    return;
+  }
+
+  startLastTimer();
+  userArr = JSON.parse(JSON.stringify(continueLastGame()));
+  select5.selectedIndex = indexLastGame;
+  showRes = false;
+  indexGame = JSON.parse(localStorage.getItem("indexGame"));
+  analyzeLeftNumber();
+  analyzeTopNumber();
+  removeText();
 });

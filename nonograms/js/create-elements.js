@@ -33,11 +33,26 @@ const createElements = () => {
 
   const resetButton = document.createElement("button");
   resetButton.classList.add("reset");
+  resetButton.classList.add("btn");
   resetButton.textContent = "reset game";
+
+  const continueButton = document.createElement("button");
+  continueButton.classList.add("continue");
+  continueButton.classList.add("btn");
+  continueButton.textContent = "continue last game";
+
+  const saveButton = document.createElement("button");
+  saveButton.classList.add("save");
+  saveButton.classList.add("btn");
+  saveButton.textContent = "save game";
 
   const resolveButton = document.createElement("button");
   resolveButton.classList.add("resolve");
+  resolveButton.classList.add("btn");
   resolveButton.textContent = "show solution";
+
+  const boxButtons = document.createElement("div");
+  boxButtons.classList.add("box-buttons");
 
   const choiceEasygame = document.createElement("select");
   choiceEasygame.classList.add("select");
@@ -69,8 +84,11 @@ const createElements = () => {
   wrapper.append(container);
   wrapper.append(boxContainer);
   wrapper.append(choiceEasygame);
-  wrapper.append(resolveButton);
-  wrapper.append(resetButton);
+  wrapper.append(boxButtons);
+  boxButtons.append(resolveButton);
+  boxButtons.append(saveButton);
+  boxButtons.append(continueButton);
+  boxButtons.append(resetButton);
   wrapper.append(toggleTheme);
   main.append(wrapper);
   document.body.prepend(main);
